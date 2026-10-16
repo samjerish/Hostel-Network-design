@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Centralized Network Infrastructure Simulator and Visualizer for a Four-Floor University Hostel based on Cisco Packet Tracer architecture.">
+  <title>University Hostel Network Design & Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dark-theme">
+  <!-- Top Navigation Bar -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="logo-badge">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+          <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+          <line x1="6" y1="6" x2="6.01" y2="6"></line>
+          <line x1="6" y1="18" x2="6.01" y2="18"></line>
+          <path d="M12 10v4"></path>
+        </svg>
+      </div>
+      <div>
+        <h1 class="app-title">University Hostel Network Simulator</h1>
+        <p class="app-subtitle">Cisco Packet Tracer Architecture & Simulation Engine • 4 Floors • 120 Rooms</p>
+      </div>
+    </div>
+
+    <div class="header-center">
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="topology">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          Topology Map
+        </button>
+        <button class="nav-tab" data-tab="packet-tracer">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Packet Tracer Lab
+        </button>
+        <button class="nav-tab" data-tab="dhcp-lab">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          DHCP Engine
+        </button>
+        <button class="nav-tab" data-tab="verification">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          Test Suite (8/8)
+        </button>
+        <button class="nav-tab" data-tab="configs">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+          Cisco IOS Configs
+        </button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="system-badge online">
+        <span class="status-dot"></span>
+        <span>Simulation Active</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" id="resetSimBtn" title="Reset all state and links">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M21 3v5h-5"></path><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path></svg>
+        Reset State
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewport -->
+  <main class="main-content">
+    
+    <!-- ==================== TAB 1: TOPOLOGY MAP ==================== -->
+    <section class="tab-pane active" id="pane-topology">
+      <div class="topology-layout">
+        <!-- Topology Canvas Container -->
+        <div class="topology-canvas-wrapper">
+          <div class="canvas-controls">
+            <div class="control-group">
+              <span class="control-label">VLAN Filter:</span>
+              <button class="vlan-filter-btn active" data-vlan="all">All</button>
+              <button class="vlan-filter-btn" data-vlan="10" style="--c:#3b82f6;">V10 (F1)</button>
+              <button class="vlan-filter-btn" data-vlan="20" style="--c:#06b6d4;">V20 (F2)</button>
+              <button class="vlan-filter-btn" data-vlan="30" style="--c:#10b981;">V30 (F3)</button>
+              <button class="vlan-filter-btn" data-vlan="40" style="--c:#8b5cf6;">V40 (F4)</button>
+              <button class="vlan-filter-btn" data-vlan="50" style="--c:#f59e0b;">V50 (Admin)</button>
+              <button class="vlan-filter-btn" data-vlan="60" style="--c:#ef4444;">V60 (Sec)</button>
+              <button class="vlan-filter-btn" data-vlan="70" style="--c:#ec4899;">V70 (CCTV)</button>
+              <button class="vlan-filter-btn" data-vlan="80" style="--c:#14b8a6;">V80 (Srv)</button>
+              <button class="vlan-filter-btn" data-vlan="90" style="--c:#64748b;">V90 (Mgmt)</button>
+              <button class="vlan-filter-btn" data-vlan="100" style="--c:#eab308;">V100 (Common)</button>
+            </div>
+            <div class="canvas-legend">
+              <span class="legend-item"><span class="legend-line trunk"></span> 802.1Q Trunk</span>
+              <span class="legend-item"><span class="legend-line access"></span> Access Link</span>
+              <span class="legend-item"><span class="legend-dot up"></span> Link Up</span>
+              <span class="legend-item"><span class="legend-dot down"></span> Click Link to Cut/Fail</span>
+            </div>
+          </div>
+
+          <div class="topology-viewport" id="topologyViewport">
+            <svg id="networkSvg" class="network-svg" viewBox="0 0 1300 750" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+                <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+                </marker>
+              </defs>
+
+              <!-- Connection Links rendered dynamically -->
+              <g id="linksGroup"></g>
+              <!-- Animated Packet Group -->
+              <g id="packetsGroup"></g>
+              <!-- Nodes rendered dynamically -->
+              <g id="nodesGroup"></g>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Device Inspector Sidebar -->
+        <aside class="device-inspector" id="deviceInspector">
+          <div class="inspector-header">
+            <div class="device-badge">
+              <span class="device-icon-wrapper" id="inspIcon"></span>
+              <div>
+                <h3 id="inspName">HOSTEL-CORE</h3>
+                <span class="device-type-tag" id="inspModel">Catalyst 3650-24PS</span>
+              </div>
+            </div>
+            <span class="status-pill green" id="inspStatus">Online</span>
+          </div>
+
+          <div class="inspector-content">
+            <div class="info-grid">
+              <div class="info-card">
+                <span class="info-label">Primary IP</span>
+                <span class="info-value font-mono" id="inspIp">10.20.20.1</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">Role</span>
+                <span class="info-value" id="inspRole">Core / SVI Routing</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">Active VLANs</span>
+                <span class="info-value" id="inspVlans">10,20,30,40,50,60,70,80,90,100</span>
+              </div>
+              <div class="info-card">
+                <span class="info-label">STP State</span>
+                <span class="info-value" id="inspStp">Rapid-PVST (Root Primary)</span>
+              </div>
+            </div>
+
+            <div class="cli-terminal-card">
+              <div class="terminal-bar">
+                <div class="terminal-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <span class="terminal-title">Cisco IOS CLI Emulator</span>
+              </div>
+              <div class="terminal-quick-cmds">
+                <button class="cmd-chip" data-cmd="show ip int brief">show ip int brief</button>
+                <button class="cmd-chip" data-cmd="show vlan brief">show vlan brief</button>
+                <button class="cmd-chip" data-cmd="show interfaces trunk">show int trunk</button>
+                <button class="cmd-chip" data-cmd="show ip dhcp binding">show ip dhcp</button>
+                <button class="cmd-chip" data-cmd="show ip access-lists">show ip access-lists</button>
+              </div>
+              <div class="terminal-screen" id="terminalOutput">
+HOSTEL-CORE# show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+Vlan10                 10.20.0.1       YES manual up                    up      
+Vlan20                 10.20.2.1       YES manual up                    up      
+Vlan30                 10.20.4.1       YES manual up                    up      
+Vlan40                 10.20.6.1       YES manual up                    up      
+Vlan50                 10.20.16.1      YES manual up                    up      
+Vlan60                 10.20.17.1      YES manual up                    up      
+Vlan70                 10.20.18.1      YES manual up                    up      
+Vlan80                 10.20.19.1      YES manual up                    up      
+Vlan90                 10.20.20.1      YES manual up                    up      
+Vlan100                10.20.8.1       YES manual up                    up      
+GigabitEthernet1/0/1   unassigned      YES unset  up                    up      
+GigabitEthernet1/0/2   unassigned      YES unset  up                    up      
+GigabitEthernet1/0/12  unassigned      YES unset  up                    up      
+GigabitEthernet1/0/13  unassigned      YES unset  up                    up      
+GigabitEthernet1/0/14  unassigned      YES unset  up                    up      
+HOSTEL-CORE# 
+              </div>
+            </div>
+
+            <div class="port-status-section">
+              <h4 class="section-title">Port Allocation Summary</h4>
+              <div class="port-chips" id="inspPorts">
+                <!-- Port allocation chips rendered dynamically -->
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: PACKET TRACER SIMULATION ==================== -->
+    <section class="tab-pane" id="pane-packet-tracer">
+      <div class="packet-tracer-container">
+        <!-- Control Form -->
+        <div class="packet-form-card">
+          <div class="card-header">
+            <div>
+              <h3>Interactive Packet Flow & ACL Policy Inspector</h3>
+              <p>Simulate Layer 2 and Layer 3 packet transmission across the hostel network. Test extended ACL enforcement and inter-VLAN routing rule-by-rule.</p>
+            </div>
+            <div class="preset-dropdown-wrap">
+              <label for="packetPreset">Quick Scenario Presets:</label>
+              <select id="packetPreset" class="form-select">
+                <option value="f1_web">1. Student F1 → Hostel Web Portal (HTTP 80) [Permit]</option>
+                <option value="f1_dns">2. Student F1 → Hostel DNS (UDP 53) [Permit]</option>
+                <option value="f1_f2">3. Student F1 → Student F2 (Inter-Floor Isolation) [Deny]</option>
+                <option value="f1_admin">4. Student F1 → Warden Admin Workstation [Deny]</option>
+                <option value="f1_cctv">5. Student F1 → CCTV IP Camera F1-01 [Deny]</option>
+                <option value="cctv_nvr">6. CCTV Camera → HOSTEL-NVR (RTSP 554) [Permit]</option>
+                <option value="sec_cctv">7. Security Console → CCTV Camera (HTTPS 443) [Permit]</option>
+                <option value="admin_srv">8. Warden PC → Hostel Server (HTTPS 443) [Permit]</option>
+                <option value="student_ssh">9. Student F1 → Core Switch SSH (Port 22) [Deny]</option>
+                <option value="nms_ssh">10. NMS Station → Core Switch SSH (Port 22) [Permit]</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="packet-config-grid">
+            <div class="form-group">
+              <label for="pktSource">Source Endpoint</label>
+              <select id="pktSource" class="form-select">
+                <optgroup label="Floor 1 (VLAN 10)">
+                  <option value="student_f1_wired" selected>Room 102 PC (10.20.0.52)</option>
+                  <option value="student_f1_wifi">Floor 1 Laptop Wi-Fi (10.20.0.85)</option>
+                </optgroup>
+                <optgroup label="Floor 2 (VLAN 20)">
+                  <option value="student_f2_wired">Room 205 PC (10.20.2.60)</option>
+                  <option value="student_f2_wifi">Floor 2 Phone Wi-Fi (10.20.2.92)</option>
+                </optgroup>
+                <optgroup label="Floor 3 (VLAN 30)">
+                  <option value="student_f3_wired">Room 312 PC (10.20.4.55)</option>
+                </optgroup>
+                <optgroup label="Floor 4 (VLAN 40)">
+                  <option value="student_f4_wired">Room 418 PC (10.20.6.72)</option>
+                </optgroup>
+                <optgroup label="Administration (VLAN 50)">
+                  <option value="admin_pc">Warden Workstation (10.20.16.10)</option>
+                </optgroup>
+                <optgroup label="Security Operations (VLAN 60)">
+                  <option value="sec_pc">Security Guard Console (10.20.17.10)</option>
+                </optgroup>
+                <optgroup label="CCTV Infrastructure (VLAN 70)">
+                  <option value="cctv_cam_1">CCTV Camera F1-01 (10.20.18.11)</option>
+                  <option value="cctv_cam_2">CCTV Camera F4-08 (10.20.18.42)</option>
+                </optgroup>
+                <optgroup label="Network Management (VLAN 90)">
+                  <option value="nms_host">HOSTEL-NMS Host (10.20.20.10)</option>
+                </optgroup>
+                <optgroup label="Common Room (VLAN 100)">
+                  <option value="common_wifi">Common Room Tablet (10.20.8.61)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pktProtocol">Protocol / Application</label>
+              <select id="pktProtocol" class="form-select">
+                <option value="HTTP_80">HTTP (TCP Port 80) - Web Portal</option>
+                <option value="HTTPS_443">HTTPS (TCP Port 443) - Secure Web / Admin</option>
+                <option value="DNS_53">DNS (UDP Port 53) - Domain Lookup</option>
+                <option value="ICMP_ECHO">ICMP Echo Request (Ping)</option>
+                <option value="RTSP_554">RTSP (TCP/UDP Port 554) - Video Stream</option>
+                <option value="SSH_22">SSH (TCP Port 22) - Switch Management</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="pktDest">Destination Endpoint</label>
+              <select id="pktDest" class="form-select">
+                <optgroup label="Servers (VLAN 80)">
+                  <option value="srv_web" selected>HOSTEL-SRV: Web & DNS (10.20.19.10)</option>
+                  <option value="srv_nvr">HOSTEL-NVR: Video Storage (10.20.19.20)</option>
+                </optgroup>
+                <optgroup label="Administrative (VLAN 50)">
+                  <option value="admin_pc">Warden Workstation (10.20.16.10)</option>
+                </optgroup>
+                <optgroup label="Security Desk (VLAN 60)">
+                  <option value="sec_pc">Security Desk Console (10.20.17.10)</option>
+                </optgroup>
+                <optgroup label="CCTV Infrastructure (VLAN 70)">
+                  <option value="cctv_cam_1">CCTV Camera F1-01 (10.20.18.11)</option>
+                </optgroup>
+                <optgroup label="Student Floors (VLAN 10-40)">
+                  <option value="student_f2_wired">Floor 2 Room 205 PC (10.20.2.60)</option>
+                  <option value="student_f3_wired">Floor 3 Room 312 PC (10.20.4.55)</option>
+                </optgroup>
+                <optgroup label="Infrastructure SVI / Mgmt">
+                  <option value="core_sw">HOSTEL-CORE Switch SVI (10.20.20.1)</option>
+                  <option value="f1_sw">F1-ACC-A Switch Mgmt (10.20.20.11)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-action">
+              <button class="btn btn-primary btn-block" id="btnRunPacketSim">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Simulate Packet Trace
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Progress & Decision Ledger -->
+        <div class="simulation-dashboard">
+          <div class="sim-verdict-banner" id="simVerdictBanner">
+            <div class="verdict-icon-box" id="verdictIconBox">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <div class="verdict-text-box">
+              <span class="verdict-status-title" id="verdictTitle">PACKET PERMITTED (200 OK)</span>
+              <p class="verdict-status-desc" id="verdictDesc">Traffic matched permit statement in Cisco IOS extended ACL 'STUDENT-IN'.</p>
+            </div>
+            <div class="verdict-metrics">
+              <div class="metric-pill"><span>Hop Count:</span> <strong id="metricHops">3</strong></div>
+              <div class="metric-pill"><span>Simulated Latency:</span> <strong id="metricLatency">1.2 ms</strong></div>
+              <div class="metric-pill"><span>Frame:</span> <strong id="metricVlan">802.1Q Tagged</strong></div>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Packet Inspection Path -->
+          <div class="packet-steps-container" id="packetStepsContainer">
+            <!-- Dynamically populated trace steps -->
+          </div>
+
+          <!-- ACL Matching Rule Inspection -->
+          <div class="acl-rule-callout" id="aclCallout">
+            <div class="callout-header">
+              <span class="callout-badge">Cisco IOS ACL Rule Evaluated</span>
+              <span class="callout-file">Applied: interface Vlan10 • ip access-group STUDENT-IN in</span>
+            </div>
+            <pre class="acl-code-block" id="aclMatchedLine"><code>ip access-list extended STUDENT-IN
+  permit tcp any host 10.20.19.10 eq 80  <-- [MATCHED: PERMIT]</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: DHCP LAB ==================== -->
+    <section class="tab-pane" id="pane-dhcp-lab">
+      <div class="dhcp-lab-grid">
+        <div class="dhcp-control-panel">
+          <h3>Centralized DHCP Server Simulation</h3>
+          <p>The Catalyst 3650-24PS collapsed core hosts local DHCP pools for all four floors and the common room. Each pool is allocated a <strong>/23 subnet</strong> (510 usable hosts) to ensure capacity for expansion.</p>
+
+          <div class="dhcp-interactive-box">
+            <h4>Simulate Client DHCP Request (DORA Flow)</h4>
+            <div class="form-group">
+              <label for="dhcpFloorSelect">Select Floor / Location:</label>
+              <select id="dhcpFloorSelect" class="form-select">
+                <option value="1">Floor 1 (VLAN 10, Network 10.20.0.0/23)</option>
+                <option value="2">Floor 2 (VLAN 20, Network 10.20.2.0/23)</option>
+                <option value="3">Floor 3 (VLAN 30, Network 10.20.4.0/23)</option>
+                <option value="4">Floor 4 (VLAN 40, Network 10.20.6.0/23)</option>
+                <option value="100">Common Room (VLAN 100, Network 10.20.8.0/23)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="btnRequestDhcp">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              Request IP Lease (DORA)
+            </button>
+          </div>
+
+          <!-- DORA Visualization Box -->
+          <div class="dora-diagram">
+            <div class="dora-step" id="doraD">
+              <div class="step-num">1</div>
+              <div class="step-info">
+                <strong>DHCP DISCOVER</strong>
+                <span>Client → 255.255.255.255:67 (Broadcast)</span>
+              </div>
+            </div>
+            <div class="dora-arrow">↓</div>
+            <div class="dora-step" id="doraO">
+              <div class="step-num">2</div>
+              <div class="step-info">
+                <strong>DHCP OFFER</strong>
+                <span>Core SVI → Client (Offers IP & Mask)</span>
+              </div>
+            </div>
+            <div class="dora-arrow">↓</div>
+            <div class="dora-step" id="doraR">
+              <div class="step-num">3</div>
+              <div class="step-info">
+                <strong>DHCP REQUEST</strong>
+                <span>Client confirms offered configuration</span>
+              </div>
+            </div>
+            <div class="dora-arrow">↓</div>
+            <div class="dora-step" id="doraA">
+              <div class="step-num">4</div>
+              <div class="step-info">
+                <strong>DHCP ACKNOWLEDGE</strong>
+                <span>Core commits binding with lease timer</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Binding Table -->
+        <div class="dhcp-table-panel">
+          <div class="table-header-row">
+            <h4>Live DHCP Lease Bindings (`show ip dhcp binding`)</h4>
+            <span class="badge-total" id="bindingCount">6 Active Leases</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Assigned IP</th>
+                  <th>Client Hardware Address</th>
+                  <th>Subnet / VLAN</th>
+                  <th>Default Gateway</th>
+                  <th>DNS Server</th>
+                  <th>Lease Expiration</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody id="dhcpTableBody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: VERIFICATION TEST SUITE ==================== -->
+    <section class="tab-pane" id="pane-verification">
+      <div class="verification-wrapper">
+        <div class="verif-header-card">
+          <div class="verif-intro">
+            <h3>Automated Verification & Failure Testing Ledger</h3>
+            <p>Formal validation against all 8 test criteria defined in Section 8 of the Project Brief. Click below to execute automated end-to-end packet simulations, ACL counter inspections, and link failure recovery tests.</p>
+          </div>
+          <div class="verif-actions">
+            <button class="btn btn-success" id="btnRunAllTests">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              Execute All 8 Tests
+            </button>
+            <button class="btn btn-secondary" id="btnExportReport">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Export Results Report
+            </button>
+          </div>
+        </div>
+
+        <div class="test-cards-grid" id="testCardsGrid">
+          <!-- Dynamically generated test cards for all 8 items -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: CISCO IOS CONFIGS ==================== -->
+    <section class="tab-pane" id="pane-configs">
+      <div class="configs-layout">
+        <aside class="configs-sidebar">
+          <h4>Device Configurations</h4>
+          <p class="text-muted">Select a device to view and copy its validated Cisco IOS configuration:</p>
+          <div class="config-device-list">
+            <button class="cfg-dev-btn active" data-cfg="HOSTEL-CORE">
+              <strong>HOSTEL-CORE</strong>
+              <span>Catalyst 3650-24PS</span>
+            </button>
+            <button class="cfg-dev-btn" data-cfg="F1-ACC-A">
+              <strong>F1-ACC-A</strong>
+              <span>Catalyst 2960-48TT (Floor 1 Wing A)</span>
+            </button>
+            <button class="cfg-dev-btn" data-cfg="F1-ACC-B">
+              <strong>F1-ACC-B</strong>
+              <span>Catalyst 2960-48TT (Floor 1 Wing B)</span>
+            </button>
+            <button class="cfg-dev-btn" data-cfg="ADMIN-ACC">
+              <strong>ADMIN-ACC</strong>
+              <span>Catalyst 2960-24TT (Warden Office)</span>
+            </button>
+            <button class="cfg-dev-btn" data-cfg="SECURITY-ACC">
+              <strong>SECURITY-ACC</strong>
+              <span>Catalyst 2960-24TT (Security Desk)</span>
+            </button>
+            <button class="cfg-dev-btn" data-cfg="COMMON-ACC">
+              <strong>COMMON-ACC</strong>
+              <span>Catalyst 2960-24TT (Common Room)</span>
+            </button>
+          </div>
+        </aside>
+
+        <div class="configs-viewer">
+          <div class="viewer-top-bar">
+            <div>
+              <span class="active-cfg-name" id="cfgActiveName">HOSTEL-CORE.cfg</span>
+              <span class="active-cfg-badge" id="cfgActiveBadge">Catalyst 3650 Multilayer Switch</span>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnCopyConfig">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              Copy to Clipboard
+            </button>
+          </div>
+          <pre class="config-code-pre"><code id="configDisplay">Loading configuration...</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="topology.js"></script>
+  <script src="simulation.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
